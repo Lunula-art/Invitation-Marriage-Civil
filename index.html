@@ -1,119 +1,117 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invitation - Bob & Gertrude</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Invitation de Mariage</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Playfair Display', serif;
-      background: #fdf8f4;
+      font-family: 'Georgia', serif;
+      background-color: #fefefe;
       color: #333;
-      text-align: center;
-      animation: fadeIn 2s ease-in;
+      overflow-x: hidden;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    header {
-      background: #e4dcd3;
-      padding: 3em 1em;
-    }
-    h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3em;
-      margin: 0;
-      color: #a9746e;
-    }
-    .quote {
-      font-style: italic;
-      color: #6c5c54;
-      margin-top: 1em;
-    }
+
     section {
-      padding: 2em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      transition: opacity 1s, transform 1s;
     }
-    .info {
-      margin-bottom: 2em;
-      line-height: 1.8em;
+
+    h1, h2 {
+      font-weight: normal;
+      margin-bottom: 20px;
     }
-    .rsvp {
-      background: #f0eae2;
-      padding: 2em;
-    }
-    input, textarea {
-      padding: 10px;
-      margin: 10px 0;
-      width: 80%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-family: 'Playfair Display', serif;
-    }
+
     button {
-      padding: 10px 20px;
-      background-color: #a9746e;
-      color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #c89f9c;
       border: none;
-      border-radius: 20px;
-      font-size: 1em;
+      color: white;
       cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s ease;
     }
-    footer {
-      margin-top: 2em;
-      font-size: 0.9em;
-      color: #999;
-      padding-bottom: 2em;
+
+    button:hover {
+      background-color: #a87b79;
     }
-    .heart {
-      font-size: 2em;
-      color: #e25555;
-      animation: heartbeat 1.5s infinite;
+
+    input, select, textarea {
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 400px;
+      font-size: 1rem;
     }
-    @keyframes heartbeat {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
+
+    .hidden {
+      display: none;
     }
+
+    .fade-in {
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
   </style>
 </head>
 <body>
+  <section id="page1" class="fade-in">
+    <h1>Bob Mupier & Gertrude Lunula</h1>
+    <h2>"Rien n’a été ordinaire, sauf notre certitude d’être faits l’un pour l’autre."</h2>
+    <button onclick="showPage('page2')">→ Entrer</button>
+  </section>
 
-<header>
-  <h1>Bob & Gertrude</h1>
-  <div class="heart">♥</div>
-  <p class="quote">"Notre histoire commence ici, entourés d'amour, de rires et de promesses."</p>
-</header>
-
-<section>
-  <div class="info">
-    <h2>Invitation au mariage civil</h2>
-    <p><strong>Date :</strong> Samedi 3 mai 2025</p>
-    <p><strong>Heure :</strong> 11h30</p>
-    <p><strong>Lieu :</strong> 5e rue Limete Industriel, n°11<br>Chez les Pères Capucins</p>
+  <section id="page2" class="hidden fade-in">
+    <h1>Bienvenue à notre mariage civil</h1>
+    <p>Nous serions honorés de partager ce moment unique avec vous.</p>
+    <p><strong>Date :</strong> 3 mai 2025 à 11h30</p>
+    <p><strong>Lieu :</strong> 5e rue Limete Industriel n°11 chez les Pères Capucins</p>
     <p><strong>Code vestimentaire :</strong> Chic en couleur</p>
-  </div>
-</section>
+    <button onclick="showPage('page3')">→ Confirmer votre présence</button>
+  </section>
 
-<section class="rsvp">
-  <h2>Confirmer votre présence</h2>
-  <form action="https://formsubmit.co/gertrudelunula@gmail.com" method="POST">
-    <input type="hidden" name="_cc" value="ayi_eta@yahoo.fr">
-    <input type="hidden" name="_subject" value="Nouvelle confirmation RSVP - Mariage Bob & Gertrude">
-    <input type="hidden" name="_captcha" value="false">
-    <input type="text" name="Nom" placeholder="Votre nom" required><br>
-    <input type="number" name="Nombre de personnes" placeholder="Nombre de personnes" required><br>
-    <textarea name="Message" placeholder="Laisser un message (optionnel)"></textarea><br>
-    <button type="submit">Envoyer</button>
-  </form>
-</section>
+  <section id="page3" class="hidden fade-in">
+    <h2>Confirmez votre présence</h2>
+    <form id="rsvpForm" onsubmit="handleSubmit(event)">
+      <input type="text" id="nom" placeholder="Votre nom" required />
+      <input type="number" id="nombre" placeholder="Nombre de personnes" required />
+      <textarea id="message" rows="3" placeholder="Un petit mot si vous le souhaitez..."></textarea>
+      <button type="submit">Envoyer</button>
+    </form>
+    <div id="merciMessage" class="hidden">
+      <h2>Merci pour votre réservation 💖</h2>
+      <p>Merci d’avoir réservé et de contribuer à rendre cette journée mémorable. Nous avons hâte de partager ce moment avec vous.</p>
+    </div>
+  </section>
 
-<footer>
-  <p>Merci de faire partie de notre histoire ✨</p>
-</footer>
+  <script>
+    function showPage(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+      const section = document.getElementById(id);
+      section.classList.remove('hidden');
+      section.scrollIntoView({behavior: 'smooth'});
+    }
 
+    function handleSubmit(event) {
+      event.preventDefault();
+      document.getElementById("rsvpForm").classList.add("hidden");
+      document.getElementById("merciMessage").classList.remove("hidden");
+    }
+  </script>
 </body>
 </html>
