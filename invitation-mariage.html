@@ -145,7 +145,7 @@
       .then(() => {
         form.classList.add("hidden");
         document.getElementById("merciMessage").classList.remove("hidden");
-        // localStorage.setItem("dejaConfirme", "oui"); // <- TEMPORAIREMENT désactivé pour tests
+        // localStorage.removeItem("dejaConfirme", "oui"); // <- TEMPORAIREMENT désactivé pour tests
       })
       .catch(() => {
         alert("Une erreur est survenue. Merci de réessayer.");
