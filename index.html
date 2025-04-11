@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -13,13 +14,6 @@
       overflow-x: hidden;
     }
 
-    #page1 {
-      background: url('A_wedding_invitation_digital_graphic_design_for_Bo.png') no-repeat center center;
-      background-size: cover;
-      color: white;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-    }
-
     section {
       display: flex;
       flex-direction: column;
@@ -27,14 +21,12 @@
       align-items: center;
       min-height: 100vh;
       padding: 40px 20px;
-      backdrop-filter: blur(5px);
-      background-color: rgba(255, 255, 255, 0.85);
+      transition: opacity 1s, transform 1s;
     }
 
     h1, h2 {
       font-weight: normal;
       margin-bottom: 20px;
-      text-align: center;
     }
 
     button {
@@ -52,7 +44,7 @@
       background-color: #a87b79;
     }
 
-    input, textarea {
+    input, select, textarea {
       padding: 10px;
       margin: 8px 0;
       border-radius: 6px;
@@ -62,22 +54,22 @@
       font-size: 1rem;
     }
 
-    .hidden { display: none; }
+    .hidden {
+      display: none;
+    }
 
     .fade-in {
-      animation: fadeIn 1s ease;
+      animation: fadeIn 1.2s ease forwards;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {opacity: 0; transform: translateY(30px);}
+      to {opacity: 1; transform: translateY(0);}
     }
+
   </style>
 </head>
 <body>
-
-  <audio id="confirmationSound" src="confirmation.mp3" preload="auto"></audio>
-
   <section id="page1" class="fade-in">
     <h1>Bob Mupier & Gertrude Lunula</h1>
     <h2>"Rien n’a été ordinaire, sauf notre certitude d’être faits l’un pour l’autre."</h2>
@@ -85,31 +77,25 @@
   </section>
 
   <section id="page2" class="hidden fade-in">
-    <h1>Bienvenue à notre marriage civil</h1>
+    <h1>Bienvenue à notre mariage civil</h1>
     <p>Nous serions honorés de partager ce moment unique avec vous.</p>
     <p><strong>Date :</strong> 3 mai 2025 à 11h30</p>
-    <p><strong>Lieu :</strong> 5e rue Limete Industriel n°11 chez le Père Capucins</p>
+    <p><strong>Lieu :</strong> 5e rue Limete Industriel n°11 chez les Pères Capucins</p>
     <p><strong>Code vestimentaire :</strong> Chic en couleur</p>
     <button onclick="showPage('page3')">→ Confirmer votre présence</button>
   </section>
 
   <section id="page3" class="hidden fade-in">
     <h2>Confirmez votre présence</h2>
-
-    <form id="rsvpForm" action="https://formsubmit.co/gertrudelunula@gmail.com,ayi_eta@yahoo.fr" method="POST" onsubmit="return handleSubmit(event)">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_autoresponse" value="Merci pour votre confirmation, à très bientôt.">
-      
-      <input type="text" name="Nom" id="nom" placeholder="Votre nom" required />
-      <input type="number" name="Nombre de personnes" id="nombre" placeholder="Nombre de personnes" required />
-      <textarea name="Message" id="message" rows="3" placeholder="Un petit mot si vous le souhaitez..."></textarea>
+    <form id="rsvpForm" onsubmit="handleSubmit(event)">
+      <input type="text" id="nom" placeholder="Votre nom" required />
+      <input type="number" id="nombre" placeholder="Nombre de personnes" required />
+      <textarea id="message" rows="3" placeholder="Un petit mot si vous le souhaitez..."></textarea>
       <button type="submit">Envoyer</button>
     </form>
-
     <div id="merciMessage" class="hidden">
-      <h2>Merci pour votre confirmation 💖</h2>
-      <p>Nous avons hâte de partager cette journée spéciale avec vous.</p>
+      <h2>Merci pour votre réservation 💖</h2>
+      <p>Merci d’avoir réservé et de contribuer à rendre cette journée mémorable. Nous avons hâte de partager ce moment avec vous.</p>
     </div>
   </section>
 
@@ -118,45 +104,13 @@
       document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
       const section = document.getElementById(id);
       section.classList.remove('hidden');
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    if (localStorage.getItem("dejaConfirme")) {
-      document.getElementById("page1").classList.add("hidden");
-      document.getElementById("page2").classList.add("hidden");
-      document.getElementById("page3").classList.remove("hidden");
-      document.getElementById("rsvpForm").classList.add("hidden");
-      document.getElementById("merciMessage").classList.remove("hidden");
-    }
-
-    function playSound() {
-      const sound = document.getElementById('confirmationSound');
-      if (sound) {
-        sound.play().catch(e => console.log("Autoplay bloqué par le navigateur."));
-      }
+      section.scrollIntoView({behavior: 'smooth'});
     }
 
     function handleSubmit(event) {
       event.preventDefault();
-      const form = event.target;
-
-      const formData = new FormData(form);
-      playSound();
-
-      fetch(form.action, {
-        method: "POST",
-        body: formData
-      })
-      .then(() => {
-        form.classList.add("hidden");
-        document.getElementById("merciMessage").classList.remove("hidden");
-        localStorage.setItem("dejaConfirme", "oui");
-      })
-      .catch(() => {
-        alert("Une erreur est survenue. Merci de réessayer.");
-      });
-
-      return false;
+      document.getElementById("rsvpForm").classList.add("hidden");
+      document.getElementById("merciMessage").classList.remove("hidden");
     }
   </script>
 </body>
