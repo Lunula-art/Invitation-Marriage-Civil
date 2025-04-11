@@ -1,116 +1,105 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Invitation de Mariage</title>
+  <meta charset="UTF-8">
+  <title>Invitation au mariage civil</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Georgia', serif;
-      background-color: #fefefe;
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff8f0;
       color: #333;
-      overflow-x: hidden;
+      text-align: center;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 
-    section {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 40px 20px;
-      transition: opacity 1s, transform 1s;
-    }
-
-    h1, h2 {
-      font-weight: normal;
-      margin-bottom: 20px;
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
     }
 
     button {
-      padding: 12px 24px;
-      font-size: 1rem;
-      background-color: #c89f9c;
-      border: none;
+      background-color: #d6a4a4;
       color: white;
+      border: none;
       cursor: pointer;
-      border-radius: 8px;
-      transition: background 0.3s ease;
     }
 
     button:hover {
-      background-color: #a87b79;
+      background-color: #c98b8b;
     }
 
-    input, select, textarea {
-      padding: 10px;
-      margin: 8px 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      width: 100%;
-      max-width: 400px;
-      font-size: 1rem;
+    .confirmation-message {
+      font-size: 1.2em;
+      color: green;
+      margin-top: 20px;
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .fade-in {
-      animation: fadeIn 1.2s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(30px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
   </style>
 </head>
 <body>
-  <section id="page1" class="fade-in">
-    <h1>Bob Mupier & Gertrude Lunula</h1>
-    <h2>"Rien n’a été ordinaire, sauf notre certitude d’être faits l’un pour l’autre."</h2>
-    <button onclick="showPage('page2')">→ Entrer</button>
-  </section>
+  <h1>Invitation au mariage civil</h1>
+  <p>Merci de confirmer votre présence à notre mariage civil du 3 mai 2025 à 11h30, chez les Pères Capucins, 5e Rue Limete Industriel n°11.</p>
 
-  <section id="page2" class="hidden fade-in">
-    <h1>Bienvenue à notre mariage civil</h1>
-    <p>Nous serions honorés de partager ce moment unique avec vous.</p>
-    <p><strong>Date :</strong> 3 mai 2025 à 11h30</p>
-    <p><strong>Lieu :</strong> 5e rue Limete Industriel n°11 chez les Pères Capucins</p>
-    <p><strong>Code vestimentaire :</strong> Chic en couleur</p>
-    <button onclick="showPage('page3')">→ Confirmer votre présence</button>
-  </section>
+  <form id="confirmationForm" action="https://formsubmit.co/gertrudelunula@gmail.com" method="POST" onsubmit="return handleSubmit(event)">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_template" value="table">
+    <input type="hidden" name="_autoresponse" value="Merci pour votre confirmation. Nous avons bien reçu votre présence.">
+    
+    <input type="text" name="Nom complet" placeholder="Votre nom complet" required><br>
+    <input type="number" name="Nombre de personnes" placeholder="Nombre de personnes" required><br>
+    <button type="submit">Confirmer</button>
+  </form>
 
-  <section id="page3" class="hidden fade-in">
-    <h2>Confirmez votre présence</h2>
-    <form id="rsvpForm" onsubmit="handleSubmit(event)">
-      <input type="text" id="nom" placeholder="Votre nom" required />
-      <input type="number" id="nombre" placeholder="Nombre de personnes" required />
-      <textarea id="message" rows="3" placeholder="Un petit mot si vous le souhaitez..."></textarea>
-      <button type="submit">Envoyer</button>
-    </form>
-    <div id="merciMessage" class="hidden">
-      <h2>Merci pour votre réservation 💖</h2>
-      <p>Merci d’avoir réservé et de contribuer à rendre cette journée mémorable. Nous avons hâte de partager ce moment avec vous.</p>
-    </div>
-  </section>
+  <div id="messageZone" class="confirmation-message"></div>
+
+  <audio id="confirmationSound" src="confirmation.mp3" preload="auto"></audio>
 
   <script>
-    function showPage(id) {
-      document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-      const section = document.getElementById(id);
-      section.classList.remove('hidden');
-      section.scrollIntoView({behavior: 'smooth'});
+    // Si l'utilisateur a déjà confirmé depuis ce navigateur
+    if (localStorage.getItem('confirmationEnvoyee')) {
+      document.getElementById('confirmationForm').style.display = 'none';
+      document.getElementById('messageZone').textContent = "Vous avez déjà confirmé. Merci !";
+    }
+
+    function playSound() {
+      const sound = document.getElementById('confirmationSound');
+      if (sound) {
+        sound.play().catch(e => {
+          console.log("Autoplay bloqué, le son sera peut-être joué après interaction.");
+        });
+      }
     }
 
     function handleSubmit(event) {
       event.preventDefault();
-      document.getElementById("rsvpForm").classList.add("hidden");
-      document.getElementById("merciMessage").classList.remove("hidden");
+
+      const form = event.target;
+      const data = new FormData(form);
+
+      playSound();
+
+      fetch(form.action, {
+        method: "POST",
+        body: data
+      })
+      .then(response => {
+        form.style.display = 'none';
+        document.getElementById('messageZone').textContent = "Merci pour votre confirmation ! À très bientôt.";
+        localStorage.setItem('confirmationEnvoyee', 'oui');
+      })
+      .catch(error => {
+        alert("Une erreur est survenue. Veuillez réessayer.");
+        console.error(error);
+      });
+
+      return false;
     }
   </script>
 </body>
